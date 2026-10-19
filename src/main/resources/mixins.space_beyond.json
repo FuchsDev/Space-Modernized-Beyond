@@ -1,0 +1,47 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.space_beyond.mixin",
+  "compatibilityLevel": "JAVA_${java}",
+  "refmap": "mixins.space_beyond.refmap.json",
+  "mixins": [
+    "AtmosphereEffectsMixin",
+    "BiomeGenBaseCelestialMixin",
+    "CelestialBedrockOreMixin",
+    "CelestialBodyMixin",
+    "CelestialBodyTraitAccessor",
+    "CelestialChunkGeneratorMixin",
+    "CelestialGeneratorsMixin",
+    "ChunkGeneratorMixin",
+    "ItemAtmosphereScannerMixin",
+    "ItemRocketPartMixin",
+    "LaunchPadRocketMixin",
+    "OrbitWorldMixin",
+    "OrbitalStationMixin",
+    "OreLocationsAccessor",
+    "PlanetOresMixin",
+    "RocketPartInvoker",
+    "RocketPartMixin",
+    "RocketStructMixin",
+    "SolarSystemBodyMixin",
+    "SolarSystemMixin",
+    "SpaceDimensionsMixin",
+    "TransporterRocketMixin"
+  ],
+  "client": [
+    "client.CelestialSkyRendererMixin",
+    "client.ClientLanguageMixin",
+    "client.IrisDimensionMixin",
+    "client.MenuScreensAccessor",
+    "client.OrbitSkyProviderMixin",
+    "client.OrbitSkyRendererMixin",
+    "client.OrreryPronterMixin",
+    "client.RocketEntityClientMixin",
+    "client.SkyRegistrationMixin",
+    "client.StationComputerMixin"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

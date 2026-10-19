@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "hbm_m:rag"
+    },
+    {
+      "item": "space_beyond:alcohol"
+    }
+  ],
+  "result": {
+    "item": "space_beyond:field_kit"
+  }
+}

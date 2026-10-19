@@ -1,0 +1,23 @@
+{
+  "type": "space_beyond:wemburos",
+  "generator": {
+    "type": "space_m:celestial",
+    "body": "wemburos",
+    "biome_source": {
+      "type": "space_m:celestial",
+      "body": "wemburos",
+      "biomes": [
+        "space_beyond:wemburos_violet_plains",
+        "space_beyond:wemburos_onyx_badlands",
+        "space_beyond:wemburos_gilded_highlands",
+        "space_beyond:wemburos_crystal_fields",
+        "space_beyond:wemburos_rift",
+        "space_beyond:wemburos_duskwood_forest",
+        "space_beyond:wemburos_onyx_spires",
+        "space_beyond:wemburos_golden_dunes",
+        "space_beyond:wemburos_chorus_wastes",
+        "space_beyond:wemburos_caldera"
+      ]
+    }
+  }
+}

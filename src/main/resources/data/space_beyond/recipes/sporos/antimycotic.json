@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "space_beyond:glow_cap"
+    },
+    {
+      "item": "space_beyond:spore_dust"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "item": "space_beyond:antimycotic",
+    "count": 2
+  }
+}

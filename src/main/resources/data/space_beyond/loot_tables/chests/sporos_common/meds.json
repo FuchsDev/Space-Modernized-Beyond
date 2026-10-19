@@ -1,0 +1,117 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:syringe_metal_super",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:syringe_metal_medx",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:med_ipecac",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:med_ptsd",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:iv_blood",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:iv_empty",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:siox",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:xanax",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:fmn",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:five_htp",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:bandaid",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:radx",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:pill_iodine",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "space_beyond:antimycotic",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "space_beyond:field_kit",
+          "weight": 3
+        }
+      ]
+    }
+  ],
+  "random_sequence": "space_beyond:chests/sporos_common/meds"
+}

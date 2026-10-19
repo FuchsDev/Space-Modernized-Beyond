@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "space_beyond:block/marsh_reed_bottom"
+    },
+    "half=upper": {
+      "model": "space_beyond:block/marsh_reed_top"
+    }
+  }
+}

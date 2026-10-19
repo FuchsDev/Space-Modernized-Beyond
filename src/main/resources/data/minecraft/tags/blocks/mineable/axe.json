@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "space_beyond:supply_crate",
+    "space_beyond:military_crate",
+    "space_beyond:hyphe_log",
+    "space_beyond:stripped_hyphe_log",
+    "space_beyond:dead_hyphe_log",
+    "space_beyond:hyphe_planks",
+    "space_beyond:hyphe_slab",
+    "space_beyond:hyphe_stairs",
+    "space_beyond:hyphe_fence",
+    "space_beyond:hyphe_fence_gate",
+    "space_beyond:hyphe_door",
+    "space_beyond:hyphe_trapdoor",
+    "space_beyond:fungal_stem",
+    "space_beyond:fungal_cap",
+    "space_beyond:duskwood_log",
+    "space_beyond:duskwood_planks"
+  ]
+}

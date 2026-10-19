@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "space_beyond:deep_angler",
+    "space_beyond:abyss_diver",
+    "space_beyond:lunar_sentinel",
+    "space_beyond:cryo_behemoth",
+    "space_beyond:rust_titan",
+    "space_beyond:monolith_keeper",
+    "space_beyond:core_abomination",
+    "space_beyond:magma_wyrm",
+    "space_beyond:schrab_hydra",
+    "space_beyond:abyssal_leviathan",
+    "space_beyond:polymer_colossus",
+    "space_beyond:mycelial_queen"
+  ]
+}

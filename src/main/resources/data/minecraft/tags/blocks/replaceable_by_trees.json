@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "space_beyond:spore_pod",
+    "space_beyond:mycel_vine",
+    "space_beyond:giant_fern",
+    "space_beyond:marsh_reed",
+    "space_beyond:spore_bloom"
+  ]
+}

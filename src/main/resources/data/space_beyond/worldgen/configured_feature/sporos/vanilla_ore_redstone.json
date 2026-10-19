@@ -1,0 +1,16 @@
+{
+  "type": "space_m:celestial_ore",
+  "config": {
+    "ore": {
+      "Name": "space_beyond:ore_redstone_sporos"
+    },
+    "target": {
+      "Name": "space_beyond:sporos_stone"
+    },
+    "count": 8,
+    "size": 7,
+    "min_y": 0,
+    "range": 16,
+    "distribution": "vanilla"
+  }
+}

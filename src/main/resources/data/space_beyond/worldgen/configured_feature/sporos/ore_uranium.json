@@ -1,0 +1,15 @@
+{
+  "type": "space_m:celestial_ore",
+  "config": {
+    "ore": {
+      "Name": "space_beyond:ore_uranium_sporos"
+    },
+    "target": {
+      "Name": "space_beyond:sporos_stone"
+    },
+    "count": "hbm_m:uraniumSpawn",
+    "size": 5,
+    "min_y": 5,
+    "range": 20
+  }
+}

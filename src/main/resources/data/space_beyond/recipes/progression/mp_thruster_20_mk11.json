@@ -1,0 +1,38 @@
+{
+  "type": "hbm_m:assembler",
+  "duration": 1280,
+  "power": 540,
+  "ingredients": [
+    {
+      "item": "hbm_m:seg_20",
+      "count": 1
+    },
+    {
+      "tag": "hbm_m:oredict/ntmpipe/steel",
+      "count": 1
+    },
+    {
+      "tag": "hbm_m:oredict/ingot/tungsten",
+      "count": 8
+    },
+    {
+      "tag": "hbm_m:oredict/plate/steel",
+      "count": 6
+    },
+    {
+      "item": "space_beyond:queen_heart",
+      "count": 1
+    },
+    {
+      "item": "space_beyond:sporos_stone",
+      "count": 8
+    },
+    {
+      "tag": "hbm_m:oredict/wire_dense/bscco",
+      "count": 2
+    }
+  ],
+  "output": {
+    "item": "space_beyond:mp_thruster_20_mk11"
+  }
+}

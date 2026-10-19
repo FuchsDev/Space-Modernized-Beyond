@@ -1,0 +1,362 @@
+package com.space_m.dim.dungeon;
+
+import java.io.*;
+import java.util.*;
+
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+
+/**
+ * Pruef-Harness fuer {@link CustomDungeon}: malt das Bauwerk auf einen Baugrund (Fels unter y 0, Oberflaeche y 0, Luft
+ * darueber) und prueft Regeln (s. README). Aufruf: DCheck <Klasse> <ausgabeOrdner> [seed...]
+ */
+public final class DCheck {
+    static final Block ROCK = new Block("harness:rock"), TURF = new Block("harness:turf");
+    static final Map<String, List<String>> MOBS = new HashMap<>();
+    static {
+        MOBS.put("mun", List.of("space_m:moon_drone", "space_m:lost_astronaut"));
+        MOBS.put("minmus", List.of("space_m:frost_wisp", "space_m:glacier_brute"));
+        MOBS.put("duna", List.of("space_m:rust_scuttler", "space_m:scrap_gunner"));
+        MOBS.put("ike", List.of("space_m:void_shade", "space_m:tomb_warden"));
+        MOBS.put("dres", List.of("space_m:irradiated_ghoul", "space_m:toxic_sludge"));
+        MOBS.put("moho", List.of("space_m:cinder_imp", "space_m:magma_hound"));
+        MOBS.put("eve", List.of("space_m:crystal_mantis", "space_m:schrab_spitter"));
+        MOBS.put("laythe", List.of("space_m:deep_angler", "space_m:abyss_diver"));
+        MOBS.put("tekto", List.of("space_m:polymer_ooze", "space_m:refinery_drone"));
+        MOBS.put("sporos", List.of("space_m:hive_wasp", "space_m:sporeling", "space_m:lurker", "space_m:blindcap", "space_m:mycobrute"));
+    }
+    /** Boss-Hitbox Breite/Hoehe. */
+    static final Map<String, double[]> BOSS = Map.of("space_m:lunar_sentinel", new double[] {2.4, 4.0}, "space_m:cryo_behemoth", new double[] {3.2, 5.0},
+            "space_m:rust_titan", new double[] {3.5, 3.8}, "space_m:monolith_keeper", new double[] {2.6, 5.0}, "space_m:core_abomination", new double[] {3.0, 3.2},
+            "space_m:magma_wyrm", new double[] {2.2, 2.0}, "space_m:schrab_hydra", new double[] {2.8, 3.4}, "space_m:abyssal_leviathan", new double[] {3.5, 3.0},
+            "space_m:polymer_colossus", new double[] {2.8, 4.4}, "space_m:mycelial_queen", new double[] {2.2, 5.4});
+
+    // Volumen
+    static int R, Y0, H, N;
+    static BlockState[] vol;
+    static int idx(int u, int y, int v) {
+        if (u < -R || u > R || v < -R || v > R || y < Y0 || y >= Y0 + H) return -1;
+        return ((u + R) * N + (v + R)) * H + (y - Y0);
+    }
+    static BlockState base(int y, BlockState surf) {
+        return y < 0 ? ROCK.defaultBlockState() : y == 0 ? TURF.defaultBlockState() : Blocks.AIR.defaultBlockState();
+    }
+    static BlockState[] fresh() {
+        BlockState[] a = new BlockState[N * N * H];
+        BlockState rock = ROCK.defaultBlockState(), turf = TURF.defaultBlockState(), air = Blocks.AIR.defaultBlockState();
+        for (int i = 0; i < a.length; i++) { int y = i % H + Y0; a[i] = y < 0 ? rock : y == 0 ? turf : air; }
+        return a;
+    }
+
+    static final List<String> FAIL = new ArrayList<>(), WARN = new ArrayList<>();
+    static void fail(String s) { if (FAIL.size() < 400) FAIL.add(s); }
+    static void warn(String s) { if (WARN.size() < 400) WARN.add(s); }
+
+    static final class Out implements DungeonOut {
+        final BlockState[] a; final long seed; final int u0, u1, v0, v1; final List<String> plan = new ArrayList<>();
+        int outside, below, above;
+        final int minY, maxY;
+        Out(BlockState[] a, long seed, int u0, int u1, int v0, int v1, int minY, int maxY) { this.a = a; this.seed = seed; this.u0 = u0; this.u1 = u1; this.v0 = v0; this.v1 = v1; this.minY = minY; this.maxY = maxY; }
+        public void set(int u, int y, int v, BlockState s) {
+            if (u < u0 || u > u1 || v < v0 || v > v1) { outside++; return; }
+            if (y < minY) below++;
+            if (y > maxY) above++;
+            int i = idx(u, y, v); if (i >= 0) a[i] = s; else outside++;
+        }
+        public BlockState get(int u, int y, int v) { if (u < u0 || u > u1 || v < v0 || v > v1) return null; int i = idx(u, y, v); return i >= 0 ? a[i] : null; }
+        public double unit(long salt, int u, int y, int v) { return com.space_m.dim.sporos.city.CityRandom.unit(seed ^ salt, u, y, v); }
+        public int uMin() { return u0; } public int uMax() { return u1; } public int vMin() { return v0; } public int vMax() { return v1; }
+        public void chest(int u, int y, int v, Direction f, String t) { plan.add("chest " + u + " " + y + " " + v + " " + f + " " + t); }
+        public void barrel(int u, int y, int v, String t) { plan.add("barrel " + u + " " + y + " " + v + " " + t); }
+        public void spawner(int u, int y, int v, String t) { plan.add("spawner " + u + " " + y + " " + v + " " + t); }
+        public void mob(int u, int y, int v, String t) { plan.add("mob " + u + " " + y + " " + v + " " + t); }
+        public void elite(int u, int y, int v, String t) { plan.add("elite " + u + " " + y + " " + v + " " + t); }
+        public void dispenser(int u, int y, int v) { plan.add("dispenser " + u + " " + y + " " + v); }
+    }
+
+    // Paletten-Flags
+    static int[] ids; static List<String> pal = new ArrayList<>(); static Map<String, Integer> palIdx = new HashMap<>();
+    static boolean[] fPass, fDeadly, fWater, fClimb, fNoStand;
+    static int pid(String k) { Integer i = palIdx.get(k); if (i == null) { i = pal.size(); pal.add(k); palIdx.put(k, i); } return i; }
+    static void index(BlockState[] a) {
+        ids = new int[a.length];
+        Map<BlockState, Integer> cache = new IdentityHashMap<>();
+        for (int i = 0; i < a.length; i++) { BlockState s = a[i]; Integer p = cache.get(s); if (p == null) { p = pid(s.key()); cache.put(s, p); } ids[i] = p; }
+        int n = pal.size(); fPass = new boolean[n]; fDeadly = new boolean[n]; fWater = new boolean[n]; fClimb = new boolean[n]; fNoStand = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            String full = pal.get(i), nm = full.replaceAll("\\[.*", ""), s = nm.substring(nm.indexOf(':') + 1);
+            fPass[i] = passable(s, full); fDeadly[i] = s.equals("lava") || s.contains("bromine") || s.contains("ccl") || s.equals("fire") || s.equals("soul_fire")
+                    || s.equals("powder_snow") || s.contains("acid") || s.contains("toxic") || s.contains("sulfuric") || s.contains("corium");
+            fWater[i] = s.equals("water") || s.equals("mercury_block") || full.contains("waterlogged=true") && fPass[i]; fClimb[i] = s.equals("ladder") || s.equals("vine") || s.equals("scaffolding") || s.contains("weeping_vines") || s.contains("twisting_vines");
+            fNoStand[i] = s.endsWith("_fence") || s.endsWith("_wall") && !s.endsWith("_wall_banner") && !s.endsWith("_wall_torch") && !s.endsWith("_wall_sign") || s.equals("iron_bars") || s.endsWith("_pane") || s.equals("chain")
+                    || s.endsWith("_fence_gate") || s.equals("cactus") || s.contains("seal_field");
+        }
+    }
+    static boolean passable(String s, String full) {
+        if (s.equals("air") || s.equals("cave_air") || s.equals("water") || s.equals("cobweb") || s.equals("ladder") || s.equals("vine") || s.equals("powder_snow") || s.equals("light")) return true;
+        if (s.equals("lava") || s.equals("fire") || s.equals("soul_fire")) return true;   // durchlaessig, aber toedlich
+        if (s.endsWith("ccl_block") || s.endsWith("mercury_block") || s.endsWith("bromine_block") || s.equals("toxic_block") || s.contains("fluid")) return true; // Planetenfluide
+        String[] suf = {"_carpet", "_banner", "candle", "torch", "pressure_plate", "_button", "lever", "_sign", "rail", "redstone_wire", "tripwire", "_sapling", "flower", "tulip", "orchid", "allium",
+                "azure_bluet", "oxeye_daisy", "cornflower", "lily_of_the_valley", "dandelion", "poppy", "wither_rose", "_roots", "fern", "dead_bush", "seagrass", "kelp", "glow_lichen", "sculk_vein",
+                "moss_carpet", "short_grass", "tall_grass", "sugar_cane", "weeping_vines", "twisting_vines", "cave_vines", "hanging_roots", "spore_blossom", "small_dripleaf", "_mushroom",
+                "fungus", "nether_sprouts", "crimson_roots", "warped_roots", "sweet_berry_bush", "pink_petals", "snow", "scaffolding", "_door", "end_rod", "lightning_rod", "chain", "string", "_coral", "coral_fan",
+                "bubble_column", "frogspawn", "amethyst_bud", "amethyst_cluster", "pointed_dripstone", "flower_pot", "head", "skull", "lantern", "campfire"};
+        if (s.equals("snow_block") || s.endsWith("mushroom_block")) return false;
+        for (String x : suf) if (s.endsWith(x) || s.contains(x) && (x.equals("candle") || x.equals("torch") || x.equals("rail") || x.equals("flower"))) return !(s.endsWith("_door") && s.startsWith("iron"));
+        return false;
+    }
+    static int id(int u, int y, int v) { int i = idx(u, y, v); return i < 0 ? palIdx.getOrDefault("harness:rock", 0) : ids[i]; }
+    static boolean pass(int u, int y, int v) { int i = idx(u, y, v); return i >= 0 ? fPass[ids[i]] : y >= Y0 + H; }
+    static boolean deadly(int u, int y, int v) { int i = idx(u, y, v); return i >= 0 && fDeadly[ids[i]]; }
+    static boolean water(int u, int y, int v) { int i = idx(u, y, v); return i >= 0 && fWater[ids[i]]; }
+    static boolean climb(int u, int y, int v) { int i = idx(u, y, v); return i >= 0 && fClimb[ids[i]]; }
+    static boolean ok(int u, int y, int v) { return pass(u, y, v) && pass(u, y + 1, v) && !deadly(u, y, v) && !deadly(u, y + 1, v); }
+    static boolean stand(int u, int y, int v) {
+        if (!ok(u, y, v)) return false;
+        int i = idx(u, y - 1, v);
+        boolean solidBelow = i < 0 ? y - 1 < Y0 : !fPass[ids[i]] && !fNoStand[ids[i]];
+        return solidBelow || water(u, y, v) || climb(u, y, v) || climb(u, y - 1, v);
+    }
+    static long key(int u, int y, int v) { return ((long) (u + 1000) << 40) | ((long) (y + 1000) << 20) | (v + 1000); }
+    static Set<Long> bfs(int[] s, Set<Integer> blockIds) {
+        Set<Long> seen = new HashSet<>(); ArrayDeque<int[]> q = new ArrayDeque<>();
+        seen.add(key(s[0], s[1], s[2])); q.add(s);
+        int[][] D4 = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        while (!q.isEmpty()) {
+            int[] c = q.poll(); int u = c[0], y = c[1], v = c[2];
+            List<int[]> nx = new ArrayList<>();
+            if (climb(u, y, v) || climb(u, y + 1, v) || water(u, y, v)) { nx.add(new int[] {u, y + 1, v}); nx.add(new int[] {u, y - 1, v}); }
+            boolean head = pass(u, y + 2, v);
+            for (int[] d : D4) {
+                int nu = u + d[0], nv = v + d[1];
+                if (head) nx.add(new int[] {nu, y + 1, nv});
+                nx.add(new int[] {nu, y, nv});
+                if (ok(nu, y, nv)) for (int dy = 1; dy <= 30; dy++) {
+                    if (!pass(nu, y - dy, nv) || deadly(nu, y - dy, nv)) { nx.add(new int[] {nu, y - dy + 1, nv}); break; }
+                    if (water(nu, y - dy, nv) || climb(nu, y - dy, nv)) { nx.add(new int[] {nu, y - dy, nv}); break; }
+                }
+            }
+            if (head && !water(u, y, v)) for (int du = -4; du <= 4; du++) for (int dv = -4; dv <= 4; dv++) {
+                double dist = Math.sqrt(du * du + dv * dv); if (dist < 1.9 || dist > 4.6) continue;
+                for (int dy = 1; dy >= -2; dy--) {
+                    double lim = dy == 1 ? 3.2 : dy == 0 ? 4.2 : 4.6; if (dist > lim) continue;
+                    boolean good = true;
+                    for (int k = 1; k < (int) (dist * 2); k++) {
+                        double f = k / (dist * 2); int uu = u + (int) Math.round(du * f), vv = v + (int) Math.round(dv * f);
+                        if (uu == u && vv == v) continue; int yy = y + Math.max(dy, 0);
+                        if (!(ok(uu, yy, vv) && pass(uu, yy + 2, vv))) { good = false; break; }
+                    }
+                    if (good) nx.add(new int[] {u + du, y + dy, v + dv});
+                }
+            }
+            for (int[] n : nx) { long k = key(n[0], n[1], n[2]); if (seen.contains(k) || !stand(n[0], n[1], n[2])) continue; seen.add(k); q.add(n); }
+        }
+        return seen;
+    }
+    static boolean near(Set<Long> reach, int u, int y, int v, int r, int ry) {
+        for (int du = -r; du <= r; du++) for (int dv = -r; dv <= r; dv++) for (int dy = -ry; dy <= ry; dy++) if (reach.contains(key(u + du, y + dy, v + dv))) return true;
+        return false;
+    }
+
+    public static void main(String[] args) throws Exception {
+        String cls = args[0]; String outDir = args[1];
+        long[] seeds = args.length > 2 ? Arrays.stream(args, 2, args.length).mapToLong(Long::parseLong).toArray() : new long[] {777L, 4242L, 31337L};
+        CustomDungeon design = (CustomDungeon) Class.forName(cls).getDeclaredConstructor().newInstance();
+        String body = design.stage().body;
+        int rad = design.radius();
+        R = rad + 3; N = 2 * R + 1; Y0 = design.minY() - 3; H = design.maxY() - design.minY() + 8;
+        StringBuilder rep = new StringBuilder();
+        rep.append(cls).append("  Koerper ").append(body).append("  Radius ").append(rad).append("  y ").append(design.minY()).append("..").append(design.maxY())
+                .append("  Grundhoehe ").append(design.minBase()).append("..").append(design.maxBase()).append('\n');
+        if (design.minBase() + design.minY() < 3) fail("minBase + minY < 3 (Welt-Unterkante): " + (design.minBase() + design.minY()));
+        if (design.maxBase() + design.maxY() > 250) fail("maxBase + maxY > 250 (Weltobergrenze): " + (design.maxBase() + design.maxY()) + " -> maxBase() verkleinern");
+        if (rad > 120) fail("Radius > 120");
+        List<String> allowed = MOBS.getOrDefault(body, List.of());
+        boolean first = true;
+        for (long seed : seeds) {
+            FAIL.add("-- seed " + seed); int failMark = FAIL.size();
+            // 1) Plan (Zuschnitt leer) vs. Vollbild
+            DungeonPlan plan = new DungeonPlan(seed);
+            design.plan(plan);
+            vol = fresh();
+            Out full = new Out(vol, seed, -R, R, -R, R, design.minY(), design.maxY());
+            long t0 = System.nanoTime();
+            design.trace(full);
+            long fullMs = (System.nanoTime() - t0) / 1000000;
+            List<String> pl = new ArrayList<>();
+            for (var l : plan.loot) pl.add(l.barrel() ? "barrel " + l.u() + " " + l.y() + " " + l.v() + " " + l.table() : "chest " + l.u() + " " + l.y() + " " + l.v() + " " + l.facing() + " " + l.table());
+            for (var m : plan.spawners) pl.add("spawner " + m.u() + " " + m.y() + " " + m.v() + " " + m.type());
+            for (var m : plan.mobs) pl.add("mob " + m.u() + " " + m.y() + " " + m.v() + " " + m.type());
+            for (var m : plan.elites) pl.add("elite " + m.u() + " " + m.y() + " " + m.v() + " " + m.type());
+            for (var m : plan.dispensers) pl.add("dispenser " + m.u() + " " + m.y() + " " + m.v());
+            List<String> a = new ArrayList<>(pl), b = new ArrayList<>(full.plan); Collections.sort(a); Collections.sort(b);
+            if (!a.equals(b)) {
+                Set<String> onlyFull = new TreeSet<>(b); onlyFull.removeAll(a); Set<String> onlyPlan = new TreeSet<>(a); onlyPlan.removeAll(b);
+                fail("Plan-Eintraege haengen vom Zuschnitt ab (hinter touches()-Return?) - nur im Vollbild: " + first(onlyFull, 6) + " nur im Plan: " + first(onlyPlan, 6));
+            }
+            if (full.outside > 0) fail("Bloecke ausserhalb des Radius " + rad + " (Chebyshev) gesetzt: " + full.outside);
+            if (full.below > 0) fail("Bloecke unter minY gesetzt: " + full.below);
+            if (full.above > 0) fail("Bloecke ueber maxY gesetzt: " + full.above);
+            // 2) Chunkweise malen == Vollbild
+            for (int[] off : new int[][] {{0, 0}, {7, 11}}) {
+                BlockState[] tv = fresh(); long worst = 0, total = 0; int tiles = 0;
+                for (int tu = -R - 16 + off[0]; tu <= R; tu += 16) for (int tw = -R - 16 + off[1]; tw <= R; tw += 16) {
+                    Out o = new Out(tv, seed, tu, tu + 15, tw, tw + 15, design.minY(), design.maxY());
+                    long s = System.nanoTime(); design.trace(o); long d = System.nanoTime() - s; worst = Math.max(worst, d); total += d; tiles++;
+                }
+                int diff = 0; String ex = "";
+                for (int i = 0; i < vol.length; i++) if (!vol[i].key().equals(tv[i].key())) {
+                    if (diff++ < 5) { int y = i % H + Y0, r2 = i / H, v = r2 % N - R, u = r2 / N - R; ex += " (" + u + "," + y + "," + v + ": voll " + vol[i].key() + " / chunk " + tv[i].key() + ")"; }
+                }
+                if (diff > 0) fail("Chunkweises Malen weicht ab (" + diff + " Bloecke, Versatz " + off[0] + "/" + off[1] + "):" + ex + " -> get() nur fuer eigene Bloecke im Ausschnitt, Zuschnitt beachten");
+                if (first && off[0] == 0) rep.append(String.format("Zeit: Vollbild %d ms, je Chunk Mittel %.1f ms, max %.1f ms (%d Chunks)%n", fullMs, total / 1e6 / tiles, worst / 1e6, tiles));
+                if (worst / 1e6 > 60) warn(String.format("Ein Chunk braucht %.0f ms - Schleifen auf den Ausschnitt begrenzen (k.u0()..k.v1(), touches())", worst / 1e6));
+            }
+            // Plan-Bloecke einsetzen wie generateChunk
+            index(vol);
+            int chestId = pid("minecraft:chest"), spawnerId = pid("minecraft:spawner"), barrelId = pid("minecraft:barrel");
+            int keys = 0; String bossId = design.boss(); DungeonPlan.Mob boss = null;
+            for (var l : plan.loot) {
+                int i = idx(l.u(), l.y(), l.v()), ib = idx(l.u(), l.y() - 1, l.v());
+                if (i < 0 || ib < 0) { fail("Truhe ausserhalb: " + l); continue; }
+                if (fPass[ids[ib]]) fail("Truhe ohne festen Block darunter (wird nicht gesetzt): " + l);
+                if (!fPass[ids[i]] && !pal.get(ids[i]).startsWith("minecraft:chest")) fail("Truhe steckt in einem Block (" + pal.get(ids[i]) + "): " + l);
+                if (l.table().equals("seal_key")) keys++;
+                else if (!l.table().equals(body + "_common") && !l.table().equals(body + "_boss")) fail("Unbekannte Beutetabelle " + l.table());
+            }
+            for (var m : plan.spawners) {
+                if (!allowed.contains(m.type())) fail("Spawner-Mob nicht aus der Planetenliste " + allowed + ": " + m.type());
+            }
+            for (var m : plan.mobs) {
+                if (m.type().equals(bossId)) { if (boss != null) fail("Boss mehrfach"); boss = m; continue; }
+                if (!allowed.contains(m.type())) fail("Mob nicht aus der Planetenliste " + allowed + ": " + m.type());
+                if (!stand(m.u(), m.y(), m.v()) && !stand(m.u(), m.y() + 1, m.v())) warn("Mob ohne Stehplatz: " + m);
+            }
+            for (var m : plan.elites) {
+                keys++;
+                if (!allowed.contains(m.type())) fail("Waechter nicht aus der Planetenliste: " + m.type());
+            }
+            if (keys != 3) fail("Genau drei Siegelschluessel noetig (Kisten seal_key + Waechter), sind " + keys);
+            if (boss == null) fail("Kein Boss (k.boss(...))");
+            for (var l : plan.loot) { int i = idx(l.u(), l.y(), l.v()); if (i >= 0) ids[i] = l.barrel() ? barrelId : chestId; }
+            for (var m : plan.spawners) { int i = idx(m.u(), m.y(), m.v()); if (i >= 0) ids[i] = spawnerId; }
+            int n = pal.size(); fPass = Arrays.copyOf(fPass, n); fDeadly = Arrays.copyOf(fDeadly, n); fWater = Arrays.copyOf(fWater, n); fClimb = Arrays.copyOf(fClimb, n); fNoStand = Arrays.copyOf(fNoStand, n);
+            // 3) Fluessigkeiten dicht, Fallbloecke gestuetzt
+            int leaks = 0, falls = 0; String leakEx = "", fallEx = "";
+            for (int u = -R; u <= R; u++) for (int v = -R; v <= R; v++) for (int y = Y0 + 1; y < Y0 + H - 1; y++) {
+                String k = pal.get(ids[idx(u, y, v)]); String s = k.replaceAll("\\[.*", "");
+                boolean liquid = s.equals("minecraft:water") || s.equals("minecraft:lava") || s.contains("fluid") || s.contains("bromine") || s.contains("mercury") || s.contains("ccl") || s.contains("acid");
+                if (liquid) {
+                    int[][] nb = {{1, 0, 0}, {-1, 0, 0}, {0, 0, 1}, {0, 0, -1}, {0, -1, 0}};
+                    for (int[] d : nb) {
+                        int j = idx(u + d[0], y + d[1], v + d[2]); if (j < 0) continue;
+                        String t = pal.get(ids[j]).replaceAll("\\[.*", "");
+                        boolean open = fPass[ids[j]] && !t.equals(s) && !(t.equals("minecraft:water") || t.equals("minecraft:lava")) && !t.contains("seal");
+                        if (open && !t.equals("minecraft:water") && !t.contains("kelp") && !t.contains("seagrass")) { if (leaks++ < 4) leakEx += " " + s + "@(" + u + "," + y + "," + v + ")->" + t; break; }
+                    }
+                }
+                boolean grav = s.endsWith(":sand") || s.endsWith(":red_sand") || s.endsWith(":gravel") || s.endsWith("concrete_powder") || s.contains("suspicious") || s.endsWith("anvil");
+                if (grav && fPass[ids[idx(u, y - 1, v)]]) { if (falls++ < 4) fallEx += " " + s + "@(" + u + "," + y + "," + v + ")"; }
+            }
+            if (leaks > 0) fail(leaks + " offene Fluessigkeitsraender (Fluessigkeit fliesst aus):" + leakEx);
+            if (falls > 0) fail(falls + " Fallbloecke ohne Stuetze:" + fallEx);
+            // 4) Siegeltor(e)
+            int fieldId = palIdx.getOrDefault("space_m:seal_field", -1);
+            List<int[]> locks = new ArrayList<>();
+            for (int i = 0; i < ids.length; i++) if (pal.get(ids[i]).startsWith("space_m:seal_lock")) { int y = i % H + Y0, r2 = i / H, v = r2 % N - R, u = r2 / N - R; locks.add(new int[] {u, y, v}); }
+            if (fieldId < 0) fail("Kein Siegelfeld (k.sealGate)");
+            if (locks.size() != 3) fail("Genau drei Siegelschloesser erwartet, sind " + locks.size());
+            for (int[] l : locks) {
+                // Scan wie SealGates: 6er-Nachbarschaft ueber Feld/Schloss, Manhattan <= 24
+                Set<Long> seen = new HashSet<>(); ArrayDeque<int[]> q = new ArrayDeque<>(); q.add(l); seen.add(key(l[0], l[1], l[2])); int lk = 0;
+                while (!q.isEmpty()) {
+                    int[] p = q.poll(); String nm = pal.get(id(p[0], p[1], p[2]));
+                    if (nm.startsWith("space_m:seal_lock")) lk++; else if (!nm.startsWith("space_m:seal_field")) continue;
+                    for (int[] d : new int[][] {{1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}}) {
+                        int[] nb = {p[0] + d[0], p[1] + d[1], p[2] + d[2]};
+                        if (Math.abs(nb[0] - l[0]) + Math.abs(nb[1] - l[1]) + Math.abs(nb[2] - l[2]) > 24 || !seen.add(key(nb[0], nb[1], nb[2]))) continue;
+                        q.add(nb);
+                    }
+                }
+                if (lk != 3) fail("Schloss bei " + Arrays.toString(l) + " sieht ueber das Siegelfeld nur " + lk + " von 3 Schloessern (zusammenhaengend, <= 24 Bloecke)");
+            }
+            // 5) Erreichbarkeit
+            int[] e = design.entry();
+            if (!stand(e[0], e[1], e[2])) fail("Eingang " + Arrays.toString(e) + " ist kein Stehplatz");
+            boolean sky = true; for (int y = e[1]; y < design.maxY() + 3 && y < Y0 + H; y++) if (!pass(e[0], y, e[2])) sky = false;
+            if (!sky) warn("Ueber dem Eingang ist kein freier Himmel (Spieler muss von der Oberflaeche kommen)");
+            Set<Long> closed = bfs(e, null);
+            for (var l : plan.loot) if (l.table().equals("seal_key") && !near(closed, l.u(), l.y(), l.v(), 2, 2)) fail("Schluesselkiste nicht erreichbar (Siegel zu): " + l);
+            for (var m : plan.elites) if (!near(closed, m.u(), m.y(), m.v(), 3, 2)) fail("Siegelwaechter nicht erreichbar (Siegel zu): " + m);
+            for (int[] l : locks) if (!near(closed, l[0], l[1], l[2], 2, 3)) fail("Siegelschloss nicht erreichbar (Siegel zu): " + Arrays.toString(l));
+            if (boss != null && near(closed, boss.u(), boss.y(), boss.v(), 3, 2)) fail("Boss bei geschlossenem Siegel erreichbar! " + boss);
+            // Hoehlen-Test: natuerliches Gestein ueberall hohl -> Arena muss rundum von eigenen Bloecken umschlossen sein
+            Integer rockId = palIdx.get("harness:rock");
+            if (rockId != null && boss != null) {
+                fPass[rockId] = true;
+                Set<Long> cave = bfs(e, null);
+                fPass[rockId] = false;
+                if (near(cave, boss.u(), boss.y(), boss.v(), 3, 2)) fail("Boss ueber natuerliche Hoehlen erreichbar (Arena/Gaenge nicht rundum ummauert, Gestein ersetzt keine Wand)");
+            }
+            // oeffnen
+            int airId = pid("minecraft:air");
+            int[] keep = ids.clone();
+            for (int i = 0; i < ids.length; i++) if (ids[i] == fieldId) ids[i] = airId;
+            n = pal.size(); fPass = Arrays.copyOf(fPass, n); fDeadly = Arrays.copyOf(fDeadly, n); fWater = Arrays.copyOf(fWater, n); fClimb = Arrays.copyOf(fClimb, n); fNoStand = Arrays.copyOf(fNoStand, n);
+            fPass[airId] = true;
+            Set<Long> open = bfs(e, null);
+            if (boss != null && !near(open, boss.u(), boss.y(), boss.v(), 2, 2)) fail("Boss bei offenem Siegel nicht erreichbar: " + boss);
+            for (var l : plan.loot) if (!l.table().equals("seal_key") && !near(open, l.u(), l.y(), l.v(), 2, 2)) fail("Beute nicht erreichbar: " + l);
+            for (var m : plan.spawners) if (!near(open, m.u(), m.y(), m.v(), 5, 3)) warn("Spawner weit weg vom Weg: " + m);
+            // Bossplatz
+            if (boss != null) {
+                double[] wh = BOSS.getOrDefault(bossId, new double[] {3, 4});
+                int hw = (int) Math.ceil(wh[0] / 2 + 0.5), hh = (int) Math.ceil(wh[1]) + 1, blocked = 0;
+                for (int du = -hw; du <= hw; du++) for (int dv = -hw; dv <= hw; dv++) for (int dy = 0; dy < hh; dy++) if (!pass(boss.u() + du, boss.y() + dy, boss.v() + dv)) blocked++;
+                if (blocked > 0) fail("Bossplatz nicht frei (" + blocked + " Bloecke im Hitbox-Raum " + (2 * hw + 1) + "x" + hh + ")");
+                int arena = 0;
+                for (int du = -14; du <= 14; du++) for (int dv = -14; dv <= 14; dv++) if (open.contains(key(boss.u() + du, boss.y(), boss.v() + dv))) arena++;
+                if (arena < 250) warn("Arena wirkt klein: " + arena + " begehbare Felder im 29x29 um den Boss");
+                if (!pass(boss.u(), boss.y() + (int) wh[1] + 4, boss.v())) warn("Wenig Kopffreiheit ueber dem Boss (Spruenge/Flug)");
+            }
+            if (first) {
+                ids = keep;
+                rep.append("Plan: ").append(plan.loot.size()).append(" Kisten/Faesser, ").append(plan.spawners.size()).append(" Spawner, ").append(plan.mobs.size()).append(" Mobs, ")
+                        .append(plan.elites.size()).append(" Waechter, ").append(plan.dispensers.size()).append(" Pfeilfallen; begehbar (offen) ").append(open.size()).append(" Felder\n");
+                dump(outDir, design, plan, e, open, boss);
+            }
+            first = false;
+            if (FAIL.size() == failMark) FAIL.remove(failMark - 1);
+        }
+        boolean okAll = FAIL.isEmpty();
+        rep.append(okAll ? "ERGEBNIS: OK\n" : "ERGEBNIS: FEHLER\n");
+        for (String f : FAIL) rep.append(f.startsWith("--") ? f : "  FEHLER " + f).append('\n');
+        for (String w : WARN) rep.append("  WARNUNG ").append(w).append('\n');
+        System.out.print(rep);
+        try (PrintWriter pw = new PrintWriter(outDir + "/report.txt")) { pw.print(rep); }
+        System.exit(okAll ? 0 : 1);
+    }
+    static String first(Set<String> s, int n) { return s.stream().limit(n).toList().toString() + (s.size() > n ? " (+" + (s.size() - n) + ")" : ""); }
+
+    static void dump(String dir, CustomDungeon design, DungeonPlan plan, int[] entry, Set<Long> open, DungeonPlan.Mob boss) throws Exception {
+        try (DataOutputStream o = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(dir + "/vol.bin")))) {
+            o.writeInt(N); o.writeInt(H); o.writeInt(Y0);
+            for (int i : ids) o.writeShort(i);
+        }
+        try (PrintWriter pw = new PrintWriter(dir + "/palette.txt")) { for (String k : pal) pw.println(k); }
+        try (PrintWriter pw = new PrintWriter(dir + "/marks.txt")) {
+            pw.println("entry " + entry[0] + " " + entry[1] + " " + entry[2]);
+            if (boss != null) pw.println("boss " + boss.u() + " " + boss.y() + " " + boss.v());
+            for (var l : plan.loot) pw.println((l.table().equals("seal_key") ? "key " : "loot ") + l.u() + " " + l.y() + " " + l.v());
+            for (var m : plan.elites) pw.println("key " + m.u() + " " + m.y() + " " + m.v());
+            for (var m : plan.spawners) pw.println("spawner " + m.u() + " " + m.y() + " " + m.v());
+            for (var m : plan.mobs) if (m != boss) pw.println("mob " + m.u() + " " + m.y() + " " + m.v());
+        }
+        try (DataOutputStream o = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(dir + "/reach.bin")))) {
+            o.writeInt(open.size());
+            for (long k : open) o.writeLong(k);
+        }
+    }
+}

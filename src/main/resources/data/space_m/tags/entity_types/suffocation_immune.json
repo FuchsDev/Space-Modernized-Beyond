@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:enderman",
+    "minecraft:endermite",
+    "minecraft:shulker",
+    "minecraft:ender_dragon",
+    "space_beyond:unstable_sovereign",
+    "minecraft:wither_skeleton"
+  ]
+}

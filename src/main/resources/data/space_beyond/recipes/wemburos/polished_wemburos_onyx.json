@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "space_beyond:wemburos_onyx"
+    }
+  },
+  "result": {
+    "item": "space_beyond:polished_wemburos_onyx",
+    "count": 4
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:gun_amat",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:gun_congolake",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:gun_lag",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:gun_henry_lincoln",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:gun_heavy_revolver_lilmac",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:gun_light_revolver_dani",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 1,
+        "max": 2
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:ammo_standard_bmg50_fmj",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3,
+                "max": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:ammo_standard_g40_he",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 5
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:ammo_standard_p9_ap",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 6,
+                "max": 12
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:ammo_standard_m44_express",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 4,
+                "max": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:ammo_standard_m357_express",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 4,
+                "max": 8
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "random_sequence": "space_beyond:chests/sporos_common/guns_rare"
+}

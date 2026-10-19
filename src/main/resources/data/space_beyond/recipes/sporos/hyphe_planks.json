@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "planks",
+  "ingredients": [
+    [
+      {
+        "item": "space_beyond:hyphe_log"
+      },
+      {
+        "item": "space_beyond:stripped_hyphe_log"
+      },
+      {
+        "item": "space_beyond:dead_hyphe_log"
+      }
+    ]
+  ],
+  "result": {
+    "item": "space_beyond:hyphe_planks",
+    "count": 4
+  }
+}

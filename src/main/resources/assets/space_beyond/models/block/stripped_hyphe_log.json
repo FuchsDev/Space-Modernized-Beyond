@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "space_beyond:block/stripped_hyphe_log_top",
+    "side": "space_beyond:block/stripped_hyphe_log"
+  }
+}

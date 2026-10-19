@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "space_beyond:unstable_shard"
+    }
+  },
+  "result": {
+    "item": "space_beyond:unstable_crystal",
+    "count": 1
+  }
+}

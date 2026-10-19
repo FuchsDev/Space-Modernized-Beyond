@@ -1,0 +1,22 @@
+{
+  "type": "space_beyond:sporos",
+  "generator": {
+    "type": "space_m:celestial",
+    "body": "sporos",
+    "biome_source": {
+      "type": "space_m:celestial",
+      "body": "sporos",
+      "biomes": [
+        "space_beyond:sporos_overgrown_plains",
+        "space_beyond:sporos_moss_forest",
+        "space_beyond:sporos_swamp",
+        "space_beyond:sporos_river",
+        "space_beyond:sporos_fungal_grove",
+        "space_beyond:sporos_highland",
+        "space_beyond:sporos_spore_field",
+        "space_beyond:sporos_coast",
+        "space_beyond:sporos_lake"
+      ]
+    }
+  }
+}

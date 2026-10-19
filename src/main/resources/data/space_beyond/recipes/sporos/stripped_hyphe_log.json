@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "space_beyond:hyphe_log"
+    }
+  ],
+  "result": {
+    "item": "space_beyond:stripped_hyphe_log",
+    "count": 1
+  }
+}

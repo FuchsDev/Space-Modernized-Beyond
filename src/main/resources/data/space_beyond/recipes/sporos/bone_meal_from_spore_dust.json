@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "space_beyond:spore_dust"
+    },
+    {
+      "item": "space_beyond:spore_dust"
+    },
+    {
+      "item": "space_beyond:spore_dust"
+    },
+    {
+      "item": "space_beyond:spore_dust"
+    }
+  ],
+  "result": {
+    "item": "minecraft:bone_meal",
+    "count": 1
+  }
+}

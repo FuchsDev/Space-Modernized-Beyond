@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "space_beyond:gilded_onyx"
+  },
+  "result": {
+    "item": "minecraft:gold_nugget",
+    "count": 3
+  },
+  "experience": 0.3,
+  "cookingtime": 200
+}

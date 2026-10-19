@@ -1,0 +1,25 @@
+# Template for local.properties (copy to local.properties and adjust).
+# Values here override gradle.properties for this machine only.
+#
+# hbm.local.path — absolute path to a local HBM-Modernized clone.
+# When set, the build links against jars from
+#   <hbm.local.path>/versions/<mc-loader>/build/libs/
+# instead of pulling the Modrinth maven artifact.
+# Requires running a build in that clone first:
+#   ./gradlew :1.20.1-forge:reobfJar   (Forge: SRG jar in build/libs)
+#   ./gradlew :1.21.1-neoforge:jar
+# Only the jar matching the clone's mod.version is used (else the newest, with a warning).
+# Use forward slashes, even on Windows.
+# Leave empty or remove to fall back to the Modrinth dependency (CI default).
+hbm.local.path=
+
+# space.local.path — absolute path to a local Space Modernized clone (required until Space Modernized is published).
+# Build it first: ./gradlew :1.20.1-forge:reobfJar and ./gradlew :1.21.1-neoforge:jar in that clone.
+# Once published, set deps.space_m in gradle.properties and leave this empty.
+space.local.path=
+
+# dev.shaders — Embeddium + Oculus in runClient (Forge 1.20.1) and the shaderpack download. Default: true.
+# Set to false if a shader mod breaks the dev client.
+dev.shaders=true
+# dev.shaderpack — Modrinth slug of the shaderpack downloaded into run/shaderpacks (default: photon-shader).
+dev.shaderpack=photon-shader

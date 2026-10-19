@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "space_beyond:sporos_silt",
+    "space_beyond:wemburos_regolith",
+    "space_beyond:gilded_sand"
+  ]
+}

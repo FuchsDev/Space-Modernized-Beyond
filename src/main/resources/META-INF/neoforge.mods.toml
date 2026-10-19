@@ -1,0 +1,22 @@
+modLoader="javafml"
+loaderVersion="${javafml_range}"
+license="${mod_license}"
+issueTrackerURL="${issues_url}"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+displayURL="${homepage_url}"
+credits="Requires Space Modernized (port of the NTM Space addon) and HBM's Nuclear Tech Mod Modernized (by Raptor324 and the HBM Modernized team). Original HBM's Nuclear Tech Mod by HbMinecraft, original NTM Space addon by its contributors. Sporos, Wemburos, star map, asteroid belts and dungeons by TRFFuchs."
+description="""
+${mod_description}
+"""
+
+# Abhaengigkeiten (minecraft, neoforge, architectury, hbm_m) erzeugt das mod-platform-Plugin aus build.neoforge.gradle.kts.
+${dependencies}
+
+# Mixin-Konfiguration: NeoForge 1.21+ liest Mixins nur aus [[mixins]] (Forge: Manifest MixinConfigs).
+[[mixins]]
+config = "${mixin_config}"

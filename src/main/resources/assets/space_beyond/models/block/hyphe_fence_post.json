@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_post",
+  "textures": {
+    "texture": "space_beyond:block/hyphe_planks"
+  }
+}

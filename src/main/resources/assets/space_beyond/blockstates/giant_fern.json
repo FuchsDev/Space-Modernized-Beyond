@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "space_beyond:block/giant_fern_bottom"
+    },
+    "half=upper": {
+      "model": "space_beyond:block/giant_fern_top"
+    }
+  }
+}

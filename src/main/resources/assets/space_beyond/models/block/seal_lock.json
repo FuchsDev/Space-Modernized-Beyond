@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "space_beyond:block/seal_lock_front",
+    "side": "space_beyond:block/seal_lock_side",
+    "top": "space_beyond:block/seal_lock_side"
+  }
+}

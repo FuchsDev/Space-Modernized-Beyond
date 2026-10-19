@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "space_beyond:block/giant_fern_top"
+  },
+  "render_type": "minecraft:cutout"
+}

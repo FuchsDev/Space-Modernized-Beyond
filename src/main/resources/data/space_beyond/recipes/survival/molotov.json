@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "space_beyond:alcohol"
+    },
+    {
+      "item": "hbm_m:rag"
+    }
+  ],
+  "result": {
+    "item": "space_beyond:molotov"
+  }
+}

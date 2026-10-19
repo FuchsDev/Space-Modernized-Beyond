@@ -1,0 +1,24 @@
+{
+  "type": "hbm_m:centrifuge",
+  "ingredient": {
+    "item": "space_m:bedrock_ore_primary_rad_sporos_light"
+  },
+  "results": [
+    {
+      "item": "space_m:bedrock_ore_primary_norad_sporos_light",
+      "count": 2
+    },
+    {
+      "item": "space_m:bedrock_ore_sulfuric_byproduct_sporos_light",
+      "count": 2
+    },
+    {
+      "item": "space_m:bedrock_ore_solvent_byproduct_sporos_light",
+      "count": 2
+    },
+    {
+      "item": "space_m:bedrock_ore_rad_byproduct_sporos_light",
+      "count": 2
+    }
+  ]
+}

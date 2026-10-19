@@ -1,0 +1,319 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 2,
+        "max": 4
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:cigarette",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:bottle_empty",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:paper",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:candle",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:torch",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 6
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:rag",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:bandaid",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:fuse",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:circuit",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:battery",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:canned_beef",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:canned_tuna",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:canned_stew",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:canned_spam",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:canned_tomato",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:canned_cheese",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "space_beyond:ration_bar",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "space_beyond:canned_beans",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 0,
+        "max": 1
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:gas_mask_filter",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:gas_mask_filter_mono",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:gas_mask_filter_combo",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:gas_mask",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:gas_mask_mono",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 14
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "space_beyond:chests/sporos_common/guns_civil",
+          "weight": 8
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 92
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "space_beyond:chests/sporos_common/guns_military",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 98
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 0,
+        "max": 1
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "space_beyond:chests/sporos_common/salvage_hbm",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 0,
+        "max": 2
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "space_beyond:chests/sporos_common/salvage_space",
+          "weight": 1
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 0,
+        "max": 1
+      },
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "space_beyond:chests/sporos_common/snacks",
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "random_sequence": "space_beyond:chests/sporos_city/office"
+}

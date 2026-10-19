@@ -1,0 +1,117 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:chocolate",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:pancake",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:loops",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:twinkie",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:static_sandwich",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:canned_fist",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:bottle_nuka",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:can_mrsugar",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:canteen_vodka",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "hbm_m:cap_nuka",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 6
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "space_m:bean_roast",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "space_beyond:jerky",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "space_m:bottle_honey",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "space_m:min_cream",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "space_m:butter",
+          "weight": 2
+        }
+      ]
+    }
+  ],
+  "random_sequence": "space_beyond:chests/sporos_common/snacks"
+}

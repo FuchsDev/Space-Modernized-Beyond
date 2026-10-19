@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "space_beyond:block/hyphe_slab"
+    },
+    "type=top": {
+      "model": "space_beyond:block/hyphe_slab_top"
+    },
+    "type=double": {
+      "model": "space_beyond:block/hyphe_planks"
+    }
+  }
+}

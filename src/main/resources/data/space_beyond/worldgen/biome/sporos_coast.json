@@ -1,0 +1,149 @@
+{
+  "has_precipitation": true,
+  "temperature": 0.8,
+  "downfall": 0.85,
+  "creature_spawn_probability": 0.07,
+  "effects": {
+    "sky_color": 10733454,
+    "fog_color": 13425061,
+    "water_color": 5212794,
+    "water_fog_color": 2378306,
+    "grass_color": 8036426,
+    "foliage_color": 5933626,
+    "particle": {
+      "options": {
+        "type": "minecraft:spore_blossom_air"
+      },
+      "probability": 0.002
+    },
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    }
+  },
+  "spawners": {
+    "monster": [
+      {
+        "type": "minecraft:zombie",
+        "weight": 30,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "minecraft:skeleton",
+        "weight": 40,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "minecraft:spider",
+        "weight": 35,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "minecraft:cave_spider",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "space_beyond:sporeling",
+        "weight": 60,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "space_beyond:lurker",
+        "weight": 25,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "space_beyond:blindcap",
+        "weight": 20,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "space_beyond:mycobrute",
+        "weight": 3,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ],
+    "ambient": [
+      {
+        "type": "minecraft:bat",
+        "weight": 10,
+        "minCount": 8,
+        "maxCount": 8
+      }
+    ],
+    "water_ambient": [
+      {
+        "type": "minecraft:tropical_fish",
+        "weight": 15,
+        "minCount": 3,
+        "maxCount": 6
+      }
+    ]
+  },
+  "spawn_costs": {},
+  "carvers": {},
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [
+      "space_beyond:sporos/vanilla_ore_iron",
+      "space_beyond:sporos/vanilla_ore_gold",
+      "space_beyond:sporos/vanilla_ore_redstone",
+      "space_beyond:sporos/vanilla_ore_diamond",
+      "space_beyond:sporos/ore_alexandrite",
+      "space_beyond:sporos/depth_iron",
+      "space_beyond:sporos/depth_titanium",
+      "space_beyond:sporos/depth_tungsten",
+      "space_beyond:sporos/depth_cinnebar",
+      "space_beyond:sporos/depth_zirconium",
+      "space_beyond:sporos/depth_borax",
+      "space_beyond:sporos/ore_uranium",
+      "space_beyond:sporos/ore_thorium",
+      "space_beyond:sporos/ore_titanium",
+      "space_beyond:sporos/ore_sulfur",
+      "space_beyond:sporos/ore_aluminium",
+      "space_beyond:sporos/ore_copper",
+      "space_beyond:sporos/ore_nickel",
+      "space_beyond:sporos/ore_zinc",
+      "space_beyond:sporos/ore_fluorite",
+      "space_beyond:sporos/ore_niter",
+      "space_beyond:sporos/ore_tungsten",
+      "space_beyond:sporos/ore_lead",
+      "space_beyond:sporos/ore_beryllium",
+      "space_beyond:sporos/ore_rare",
+      "space_beyond:sporos/ore_cinnebar",
+      "space_beyond:sporos/ore_cobalt",
+      "space_beyond:sporos/cluster_iron",
+      "space_beyond:sporos/cluster_titanium",
+      "space_beyond:sporos/cluster_aluminium",
+      "space_beyond:sporos/cluster_copper",
+      "space_beyond:sporos/limestone",
+      "space_beyond:sporos/keyhole"
+    ],
+    [],
+    [],
+    [
+      "space_beyond:sporos/trees_canopy_sparse",
+      "space_beyond:sporos/deadwood_sparse",
+      "minecraft:patch_grass_jungle",
+      "space_beyond:sporos/patch_marsh_reed",
+      "space_beyond:sporos/patch_spore_bloom"
+    ],
+    []
+  ]
+}
